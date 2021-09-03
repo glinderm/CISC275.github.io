@@ -1,4 +1,4 @@
-## CISC275 Portfolio - _Linderman_
+## Geoff Linderman's CISC275 Portfolio
 
 Check out my reposity at: [https://github.com/glinderm/CISC275.github.io]
 
