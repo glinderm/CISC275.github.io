@@ -10,6 +10,8 @@ I haven't worked too much with HTML, but from what I have done it seems like a f
 
 Looking forward to a great semester!
 
+Contact: glindy@udel.edu
+
 ### Markdown
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
