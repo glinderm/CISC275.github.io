@@ -1,10 +1,10 @@
 ## Geoff Linderman's CISC275 Portfolio
 
-Check out my reposity at: [Link]https://github.com/glinderm/CISC275.github.io
+Check out my repository [here](https://github.com/glinderm/CISC275.github.io)!
 
 I'm new to Pages (and a bit shaky with Github!) so I'm keeping the tutorial below for my reference as I get a handle on this.
 
-My short-term plan for the portfolio is to jump into Javascript and HTML. A couple years back I did the Codecademy Javascript tutorial ([Link]https://www.codecademy.com/catalog/language/javascript), but I haven't used it much since - hopefully I can get back into the swing of it quickly and start creating.
+My short-term plan for the portfolio is to jump into Javascript and HTML. A couple years back I did the Codecademy Javascript [tutorial](https://www.codecademy.com/catalog/language/javascript), but I haven't used it much since - hopefully I can get back into the swing of it quickly and start creating.
 
 I haven't worked too much with HTML, but from what I have done it seems like a fairly simple, intuitive system with a lot of application, so I think it will be a good place to start as a backbone for my projects.
 
