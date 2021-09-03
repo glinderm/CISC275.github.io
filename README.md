@@ -10,7 +10,7 @@ I haven't worked too much with HTML, but from what I have done it seems like a f
 
 Looking forward to a great semester!
 
-## Welcome to GitHub Pages
+## Welcome!
 
 You can use the [editor on GitHub](https://github.com/glinderm/CISC275.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
 
