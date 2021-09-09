@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-  <p>Test</p>
+<p>Test</p>
 
 ## Geoff Linderman's CISC275 Portfolio
 
