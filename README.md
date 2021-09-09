@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+  <p>Test</p>
+
 ## Geoff Linderman's CISC275 Portfolio
 
 Check out my repository [here](https://github.com/glinderm/CISC275.github.io)!
