@@ -1,7 +1,7 @@
 <html>
   <body>
     <header>
-        <title>Geoff Linderman's CISC275 Portfolio </title>
+        <h2>Geoff Linderman's CISC275 Portfolio </h2>
         <a href="https://github.com/glinderm/CISC275.github.io">Check out my repository!</a>
     </header>
     <main>
