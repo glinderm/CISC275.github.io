@@ -4,8 +4,31 @@
     box-sizing: border-box;
 }
 
-header {
+.header {
     background-color: deepskyblue;
     border-bottom: 3px solid dodgerblue;
     position: absolute;
+    font-family: Georgia;
+    color: white;
+}
+
+.footer {
+    background-color:teal;
+    border-top: 1px solid brown;
+    position: absolute;
+    text-align: center;
+}
+
+.page-border {
+    background-color: cadetblue;
+}
+
+.page-main {
+    background-color: wheat;
+    border-radius: 4px;
+}
+
+.navbar-side {
+    position: sticky;
+    top: 600px;
 }
