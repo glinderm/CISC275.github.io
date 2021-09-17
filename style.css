@@ -3,3 +3,9 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+header {
+    background-color: deepskyblue;
+    border-bottom: 3px solid dodgerblue;
+    position: absolute;
+}
