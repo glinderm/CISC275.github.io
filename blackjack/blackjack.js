@@ -35,13 +35,28 @@ const createDeck = () => {
     }
 }
 
-const getCard = (arr) => {
-    if (arr.length > 0) {
-        arr.pop();
+const getCard = (deck, hand) => {
+    // hand = players[x].hand
+    if (deck.length > 0) {
+        hand.push(deck.pop());
     }
     else {
         alert("Out of cards!");
         endGame();
+    }
+}
+
+const deal = (deck, players) => {
+    for (let i = 0; i < players.length; i++) {
+        getcard(deck, players[i].hand);
+    }
+}
+
+const bid = (winnings, bet, stake) => {
+    if (stake <= winnings) {
+        bet = stake;
+    } else {
+        return -1;
     }
 }
 
@@ -75,7 +90,7 @@ const reshuffle = (deck, players) => {
     shuffle(deck);
 }
 
-const newGame = (num, players) => {
+const newGame = (num, deck, players) => {
     for (let n = 1; n <= num; n++) {
         switch (n) {
             case 1:
@@ -83,12 +98,15 @@ const newGame = (num, players) => {
                 break;
             case num:
                 // dealer is last player
-                players.push(addPlayer("Dealer"));
+                const dealer = addPlayer("Dealer");
+                dealer.dealer = true;
+                players.push(dealer);
                 break;
             default:
                 players.push(addPlayer("Player " + n));
         }
     }
+    deal(deck, players);
 }
 
 const endRound = (players) => {
