@@ -61,7 +61,8 @@ const addPlayer = (name) => {
         score: 0,
         bet: 0,
         winnings: 0,
-        out: false
+        out: false,
+        dealer: false
     }
 }
 
@@ -74,7 +75,7 @@ const reshuffle = (deck, players) => {
     shuffle(deck);
 }
 
-const newGame = (num) => {
+const newGame = (num, players) => {
     for (let n = 1; n <= num; n++) {
         switch (n) {
             case 1:
@@ -90,7 +91,7 @@ const newGame = (num) => {
     }
 }
 
-const endRound = () => {
+const endRound = (players) => {
     dealerScore = players[players.length-1].score;
     for (let i = 0; i < players.length-1; i++) {
         if (players[i].score > 21) {
@@ -113,9 +114,34 @@ const endRound = () => {
     }
 }
 
-const endGame = () => {
+const findWinner = (players) => {
+    let biggestPot = 0;
+    let drawPool = [];
+    for (let p = 0; p < players.length; p++) {
+        if (players[p].winnings >= biggestPot) {
+            biggestPot = players[p].winnings;
+        }
+    }
+    for (let i = 0; i < players.length; i++) {
+        if (players[i].winnings == biggestPot) {
+            drawPool.push(i);
+        }
+    }
+    return drawPool;
+}
+
+const displayWinner = (drawpool, players) => {
+    if (drawpool == 1) {
+        console.log(players[drawpool[0]] + " is the winner!");
+    } else if (drawpool > 1) {
+        console.log("Tie!");
+    } else {
+        console.log("Something has gone terribly wrong. The house wins!");
+    }
+}
+
+const endGame = (players) => {
     // ends the entire game
-    // findWinner();
+    displayWinner(findWinner(players), players);
     // reshuffle(deck, players);    no reason to reshuffle deck - if draw is empty, game ends
-    // displayWinner();
 }
