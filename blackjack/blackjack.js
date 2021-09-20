@@ -4,14 +4,15 @@ const discard = [];
 let playerName = "";
 let inputBid = 0;
 let gameOver = false;
+let roundOver = false;
 
 const playGame = (numPlayers, deck, players) => {
     newGame(numPlayers, players);
     createDeck();
     shuffle(deck);
-    let roundOver = false;
     while (gameOver == false) {
         deal(deck, players);
+        makeBids(players);
         while (roundOver == false) {
             for (let i = 0; i < players.length; i++) {
                 takeTurn(players[i]);
@@ -22,6 +23,19 @@ const playGame = (numPlayers, deck, players) => {
         roundOver = false;
     }
     endGame(players);
+}
+
+const addPlayer = (name, type) => {
+    return {
+        name: name,
+        hand: [],
+        score: 0,
+        bet: 0,
+        stake: 0,
+        winnings: 0,
+        stand: false,
+        type: type
+    }
 }
 
 const createCard = (suit, value) => {
@@ -74,6 +88,7 @@ const deal = (deck, players) => {
             return -1;
         } else {
             getcard(deck, players[i].hand);
+            getcard(deck, players[i].hand);
         }
     }
 }
@@ -81,8 +96,30 @@ const deal = (deck, players) => {
 const bid = (winnings, bet, stake) => {
     if (stake <= winnings) {
         bet = stake;
+        stake = 0;
     } else {
         return -1;
+    }
+}
+
+const makeBids = (players) => {
+    for (let i = 0; i < players.length-1; i++) {
+        bid(players[i].winnings, players[i].bet, players[i].stake);
+    }
+}
+
+const blackjack = (players) => {
+    
+    for (let i = 0; i < players.length-1; i++) {
+        if (players[players.length+1].score == 21) {
+            if (players[i].score != 21) {
+                players[i].winnings -= players[i].bet;
+            }
+            roundOver = true;
+        } else if (players[i].score == 21) {
+            players[i].winnings += (players[i].bet * 1.5)
+            players[i].stand = true;
+        }
     }
 }
 
@@ -92,19 +129,6 @@ const shuffle = (arr) => {
         let temp = arr[i];
         arr[i] = arr[k];
         arr[k] = temp;
-    }
-}
-
-
-const addPlayer = (name, type) => {
-    return {
-        name: name,
-        hand: [],
-        score: 0,
-        bet: 0,
-        winnings: 0,
-        out: false,
-        type: type
     }
 }
 
@@ -171,7 +195,7 @@ const takeTurn = (player) => {
 const buttonPress = () => {
     // bidButton - updates bid amount, does not end turn
     // hitButton - gives player card, ends turn
-    // passButton - ends turn
+    // standButton - ends turn, sets player.stand = true
 }
 
 const endRound = (players) => {
@@ -192,7 +216,7 @@ const endRound = (players) => {
         players[k].score = 0;
         players[k].bet = 0;
         if (players[k].winnings <= 0) {
-            players[k].out = true;
+            players[k].stand = true;
         }
     }
 }
