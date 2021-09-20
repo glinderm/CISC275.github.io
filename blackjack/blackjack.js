@@ -3,7 +3,26 @@ const players = [];
 const discard = [];
 let playerName = "";
 let inputBid = 0;
+let gameOver = false;
 
+const playGame = (numPlayers, deck, players) => {
+    newGame(numPlayers, players);
+    createDeck();
+    shuffle(deck);
+    let roundOver = false;
+    while (gameOver == false) {
+        deal(deck, players);
+        while (roundOver == false) {
+            for (let i = 0; i < players.length; i++) {
+                takeTurn(players[i]);
+            }
+        }
+        reshuffle(deck, players, discard, gameOver);
+        inputBid = 0;
+        roundOver = false;
+    }
+    endGame(players);
+}
 
 const createCard = (suit, value) => {
     return {
@@ -50,7 +69,12 @@ const getCard = (deck, hand) => {
 
 const deal = (deck, players) => {
     for (let i = 0; i < players.length; i++) {
-        getcard(deck, players[i].hand);
+        if (deck.length <= 0) {
+            gameOver = true;
+            return -1;
+        } else {
+            getcard(deck, players[i].hand);
+        }
     }
 }
 
@@ -134,32 +158,20 @@ const newGame = (numplayers) => {
     }
 }
 
-const playGame = (numPlayers, deck, players) => {
-    newGame(numPlayers, players);
-    createDeck();
-    shuffle(deck);
-    let gameOver = false;
-    let roundOver = false;
-    while (gameOver == false) {
-        deal(deck, players);
-        while (roundOver == false) {
-            for (let i = 0; i < players.length; i++) {
-                takeTurn(players[i]);
-            }
-        }
-        reshuffle(deck, players, discard, gameOver);
-        inputBid = 0;
-        roundOver = false;
-    }
-}
-
 const takeTurn = (player) => {
     // player = players[current]
     let hasPlayed = false;
     while (hasPlayed == false) {
         // wait for key/button event, and set hasPlayed = true
         bidButton.onclick = bid(player.winnings, player.bet, inputBid);
+        
     }
+}
+
+const buttonPress = () => {
+    // bidButton - updates bid amount, does not end turn
+    // hitButton - gives player card, ends turn
+    // passButton - ends turn
 }
 
 const endRound = (players) => {
