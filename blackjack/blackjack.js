@@ -1,6 +1,8 @@
 const deck = [];
 const players = [];
+const discard = [];
 let playerName = "";
+let inputBid = 0;
 
 
 const createCard = (suit, value) => {
@@ -69,7 +71,8 @@ const shuffle = (arr) => {
     }
 }
 
-const addPlayer = (name) => {
+
+const addPlayer = (name, type) => {
     return {
         name: name,
         hand: [],
@@ -77,42 +80,85 @@ const addPlayer = (name) => {
         bet: 0,
         winnings: 0,
         out: false,
-        dealer: false
+        type: type
     }
 }
 
 const reshuffle = (deck, players) => {
-    // probably not needed, if deck = 0, game ends
-    for (let i = 0; i < players; i++) {
-        deck.concat(players[i].hand);
-        players[i].hand = [];
+    for (let i = 0; i < players.length; i++) {
+        shiftCards(players[i].hand, deck);
     }
-    shuffle(deck);
+    shiftCards(discard, deck);
 }
 
-const newGame = (num, deck, players) => {
+const reshuffle = (deck, players, discard, gameOver) => {
+    for (let i = 0; i < players.length; i++) {
+        if (gameOver == true) {
+            shiftCards(players[i].hand, deck);
+        } else {
+            shiftCards(players[i].hand, discard);
+        }
+    }
+    if (gameOver == true) {
+        shiftCards(discard, deck);
+        shuffle(deck);
+    }
+}
+
+const shiftCards = (src, dst) => {
+    for (let i = 0; i < src.length; i++) {
+        dst.push(src.pop());
+    }
+}
+
+const discard = (players) => {
+    for (let i = 0; i < players.length; i++) {
+        shiftCards(players[i].hand, discard);
+    }
+}
+
+const newGame = (numplayers) => {
     for (let n = 1; n <= num; n++) {
         switch (n) {
             case 1:
-                players.push(addPlayer(playerName));
+                players.push(addPlayer(playerName, "player"));
                 break;
             case num:
                 // dealer is last player
-                const dealer = addPlayer("Dealer");
-                dealer.dealer = true;
-                players.push(dealer);
+                players.push(addPlayer("Dealer", "dealer"));
                 break;
             default:
-                players.push(addPlayer("Player " + n));
+                players.push(addPlayer(("Player " + n), "AI"));
                 break;
         }
     }
-    deal(deck, players);
 }
 
-const takeTurn = (players) => {
-    for (let i = 0; i < players.length; i++) {
-        
+const playGame = (numPlayers, deck, players) => {
+    newGame(numPlayers, players);
+    createDeck();
+    shuffle(deck);
+    let gameOver = false;
+    let roundOver = false;
+    while (gameOver == false) {
+        deal(deck, players);
+        while (roundOver == false) {
+            for (let i = 0; i < players.length; i++) {
+                takeTurn(players[i]);
+            }
+        }
+        reshuffle(deck, players, discard, gameOver);
+        inputBid = 0;
+        roundOver = false;
+    }
+}
+
+const takeTurn = (player) => {
+    // player = players[current]
+    let hasPlayed = false;
+    while (hasPlayed == false) {
+        // wait for key/button event, and set hasPlayed = true
+        bidButton.onclick = bid(player.winnings, player.bet, inputBid);
     }
 }
 
