@@ -169,7 +169,7 @@ const newGame = (numplayers) => {
     for (let n = 1; n <= num; n++) {
         switch (n) {
             case 1:
-                players.push(addPlayer(playerName, "player"));
+                players.push(addPlayer(playerName, "human"));
                 break;
             case num:
                 // dealer is last player
@@ -185,10 +185,33 @@ const newGame = (numplayers) => {
 const takeTurn = (player) => {
     // player = players[current]
     let hasPlayed = false;
-    while (hasPlayed == false) {
-        // wait for key/button event, and set hasPlayed = true
-        bidButton.onclick = bid(player.winnings, player.bet, inputBid);
-        
+    if (player.type == "human") {
+        while (hasPlayed == false) {
+            // wait for key/button event, and set hasPlayed = true
+            // bidButton.onclick = bid(player.winnings, player.bet, inputBid);
+            playerTurn(player.hand, hasPlayed);
+        }
+    } else {
+        while (hasPlayed == false) {
+            if (player.score >= 17) {
+                if (player.score > 21) {
+                    player.stand = true;
+                    hasPlayed = true;
+                } else {
+                    if (player.type == "dealer") {
+                        hasPlayed = true;
+                    } else {
+                        if (player.score < 18) {
+                            getCard(deck, player.hand);
+                        } else {
+                            hasPlayed = true;
+                        }
+                    }
+                }
+            } else {
+                getCard(deck, player.hand);
+            }
+        }
     }
 }
 
@@ -196,6 +219,11 @@ const buttonPress = () => {
     // bidButton - updates bid amount, does not end turn
     // hitButton - gives player card, ends turn
     // standButton - ends turn, sets player.stand = true
+}
+
+const playerTurn = (hand, hasPlayed) => {
+    // include button press handling etc
+    hasPlayed = true;
 }
 
 const endRound = (players) => {
