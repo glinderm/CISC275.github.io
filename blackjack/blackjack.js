@@ -104,9 +104,16 @@ const newGame = (num, deck, players) => {
                 break;
             default:
                 players.push(addPlayer("Player " + n));
+                break;
         }
     }
     deal(deck, players);
+}
+
+const takeTurn = (players) => {
+    for (let i = 0; i < players.length; i++) {
+        
+    }
 }
 
 const endRound = (players) => {
