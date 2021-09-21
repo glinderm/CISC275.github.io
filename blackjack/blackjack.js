@@ -1,28 +1,35 @@
-const deck = [];
-const players = [];
-const discard = [];
 let playerName = "";
 let inputBid = 0;
 let gameOver = false;
 let roundOver = false;
 
-const playGame = (numPlayers, deck, players) => {
-    newGame(numPlayers, players);
-    createDeck();
+const testDeck = createDeck();
+printDeck(testDeck);
+
+const printDeck = (deck) => {
+    for (let i = 0; i < deck.length; i++) {
+        console.log("Card: " + deck[i].name + ", " + deck[i].suit + ": " + deck[i].value);
+    }
+}
+
+const playGame = (numPlayers, players) => {
+    const players = newGame(numPlayers);
+    const deck = createDeck();
+    const discard = [];
     shuffle(deck);
     while (gameOver == false) {
         deal(deck, players);
         makeBids(players);
         while (roundOver == false) {
             for (let i = 0; i < players.length; i++) {
-                takeTurn(players[i]);
+                takeTurn(players[i], deck);
             }
         }
         reshuffle(deck, players, discard, gameOver);
         inputBid = 0;
         roundOver = false;
     }
-    endGame(players);
+    endGame(players, deck);
 }
 
 const addPlayer = (name, type) => {
@@ -38,14 +45,34 @@ const addPlayer = (name, type) => {
     }
 }
 
-const createCard = (suit, value) => {
+const createCard = (suit, value, name) => {
     return {
         suit: suit,
-        value: value
+        value: value,
+        name: name
     }
 }
 
+const nameCard = (suit, value) => {
+    let name = "";
+    if (value <= 10) {
+        name += value;
+    } else {
+        if (value == 11) {
+            name += "Jack";
+        } else if (value == 12) {
+            name += "Queen";
+        } else if (value == 13) {
+            name += "King";
+        } else {
+            name += "Ace";
+        }
+    }
+    name += " of " + suit;
+}
+
 const createDeck = () => {
+    const deck = [];
     let suit = "";
     for (let s = 0; s < 4; s++) {
         switch (s) {
@@ -64,16 +91,46 @@ const createDeck = () => {
             default:
                 suit = "Joker";
         }
-        for (let v = 0; v < 13; v++) {
-            deck.push(createCard(suit, v));
+        for (let v = 2; v < 15; v++) {
+            if (v <= 10) {
+                deck.push(createCard(suit, v, nameCard(suit, v)));
+            } else if (v < 14) {
+                deck.push(createCard(suit, 10, nameCard(suit, v)));
+            } else {
+                deck.push(createCard(suit, 14, nameCard(suit, v)));
+            }
+            
         }
     }
+    return deck;
 }
 
-const getCard = (deck, hand) => {
+const scoreHand = (hand) {
+    // takes in players[i].hand, player[i].score should be set to return
+    let totalScore = 0;
+    let aceCount = 0;
+    for (let i = 0; i < hand.length; i++) {
+        if (hand[i].value == 14) {
+            // ace
+            aceCount += 1;
+        } else {
+            totalScore += hand[i].value;
+        }
+    }
+    for (let a = 0; a < aceCount; a++) {
+        if (totalScore + 10 > 21) {
+            totalScore += 1;
+        } else {
+            totalScore += 10;
+        }
+    }
+    return totalScore;
+}
+
+const getCard = (deck, player) => {
     // hand = players[x].hand
     if (deck.length > 0) {
-        hand.push(deck.pop());
+        player.hand.push(deck.pop());
     }
     else {
         alert("Out of cards!");
@@ -89,6 +146,7 @@ const deal = (deck, players) => {
         } else {
             getcard(deck, players[i].hand);
             getcard(deck, players[i].hand);
+            players[i].score = scoreHand(players[i].hand);
         }
     }
 }
@@ -132,13 +190,6 @@ const shuffle = (arr) => {
     }
 }
 
-const reshuffle = (deck, players) => {
-    for (let i = 0; i < players.length; i++) {
-        shiftCards(players[i].hand, deck);
-    }
-    shiftCards(discard, deck);
-}
-
 const reshuffle = (deck, players, discard, gameOver) => {
     for (let i = 0; i < players.length; i++) {
         if (gameOver == true) {
@@ -159,13 +210,14 @@ const shiftCards = (src, dst) => {
     }
 }
 
-const discard = (players) => {
+const discard = (discard, players) => {
     for (let i = 0; i < players.length; i++) {
         shiftCards(players[i].hand, discard);
     }
 }
 
 const newGame = (numplayers) => {
+    let players = [];
     for (let n = 1; n <= num; n++) {
         switch (n) {
             case 1:
@@ -180,9 +232,10 @@ const newGame = (numplayers) => {
                 break;
         }
     }
+    return players;
 }
 
-const takeTurn = (player) => {
+const takeTurn = (player, deck) => {
     // player = players[current]
     let hasPlayed = false;
     if (player.type == "human") {
@@ -203,6 +256,7 @@ const takeTurn = (player) => {
                     } else {
                         if (player.score < 18) {
                             getCard(deck, player.hand);
+                            players[i].score = scoreHand(players[i].hand);
                         } else {
                             hasPlayed = true;
                         }
@@ -210,6 +264,7 @@ const takeTurn = (player) => {
                 }
             } else {
                 getCard(deck, player.hand);
+                players[i].score = scoreHand(players[i].hand);
             }
         }
     }
@@ -275,7 +330,7 @@ const displayWinner = (drawpool, players) => {
     }
 }
 
-const endGame = (players) => {
+const endGame = (players, deck) => {
     // ends the entire game
     displayWinner(findWinner(players), players);
     // reshuffle(deck, players);    no reason to reshuffle deck - if draw is empty, game ends
