@@ -105,7 +105,7 @@ const createDeck = () => {
     return deck;
 }
 
-const scoreHand = (hand) {
+const scoreHand = (hand) => {
     // takes in players[i].hand, player[i].score should be set to return
     let totalScore = 0;
     let aceCount = 0;
