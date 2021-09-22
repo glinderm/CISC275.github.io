@@ -41,3 +41,7 @@ ul .navbar-nav {
 p.page-main {
     padding: 12px;
 }
+
+body.container-fluid {
+    margin: 30px 0px;
+}
