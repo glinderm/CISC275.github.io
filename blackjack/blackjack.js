@@ -3,11 +3,6 @@ let inputBid = 0;
 let gameOver = false;
 let roundOver = false;
 
-let getCardBtn = document.querySelector('#getCardBtn');
-let playerNameForm = document.querySelector('#playerName');
-playerNameForm.addEventListener('input', updateName(testPlayer));
-getCardBtn.addEventListener('click', getCardTEST(testDeck, testPlayer));
-
 const printDeck = (deck) => {
     for (let i = 0; i < deck.length; i++) {
         console.log("Card: " + deck[i].name + ", " + deck[i].suit + ": " + deck[i].value);
@@ -390,7 +385,14 @@ const blackjack = (numPlayers) => {
 }
 // ----------------------------------------------------------TEST----------------------------------------------------------
 
-const playTestGame = () => {
+//let getCardBtn = document.querySelector('#getCardBtn');
+let playerNameForm = document.querySelector('#playerName');
+playerNameForm.addEventListener('input', updateName(testPlayer));
+//getCardBtn.addEventListener('click', getCardTEST(testDeck, testPlayer));
+//getCardBtn.onclick = getCardTEST(testDeck, testPlayer);
+document.getElementById("#getCardBtn").onclick = getCardTEST(testDeck, testPlayer);
+
+function playTestGame() {
     while (gameOver == false) {
         if (testPlayer.hand.length > 0) {
             displayCards(testPlayer, 0);
@@ -398,17 +400,17 @@ const playTestGame = () => {
     }
 }
 
-const displayCards = (player, i) => {
+function displayCards(player, i) {
     let card = player.hand[i];
     document.getElementById("shownCard").src=("../media/deckofcards/" + player.hand[i].type + "_" + player.hand[i].suit + ".png");
     document.getElementById("shownCard").alt=(player.hand[i].name);
 }
 
-const replaceDeckImg = () => {
+function replaceDeckImg() {
     document.getElementById("shownCard").src="../media/deckofcards/card_back.png";
 }
 
-const updateName = (player) => {
+function updateName(player) {
     playerName = document.getElementById("playerName").value;
     player.name = playerName;
 }
@@ -433,7 +435,7 @@ function getCardTEST(deck, player) {
     }
 }
 
-const reshuffleTEST = (deck, player, discard) => {
+function reshuffleTEST(deck, player, discard) {
     shiftCards(player.hand, discard);
     shiftCards(discard, deck);
     shuffle(deck);
@@ -442,6 +444,8 @@ const reshuffleTEST = (deck, player, discard) => {
 const testDeck = createDeck();
 const testDiscard = [];
 const testPlayer = addPlayer(playerName, human);
+
+
 
 playTestGame();
 // starts a test game for the site
