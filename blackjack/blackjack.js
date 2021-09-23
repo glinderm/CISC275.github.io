@@ -8,7 +8,7 @@ const testDiscard = [];
 const testPlayer = addPlayer(playerName, human);
 
 let getCardBtn = document.querySelector('#getCardBtn');
-let playerNameForm =document.querySelector('#playerName');
+let playerNameForm = document.querySelector('#playerName');
 playerNameForm.addEventListener('input', updateName(testPlayer));
 getCardBtn.addEventListener('click', getCardTEST(testDeck, testPlayer));
 
@@ -25,7 +25,7 @@ const playTestGame = () => {
 
 const displayCards = (player, i) => {
     let card = player.hand[i];
-    document.getElementById("shownCard").src=("./media/deckofcards/" + player.hand[i].type + "_" + player.hand[i].suit + ".png");
+    document.getElementById("shownCard").src=("https://github.com/glinderm/CISC275.github.io/tree/main/media/deckofcards/" + player.hand[i].type + "_" + player.hand[i].suit + ".png");
     document.getElementById("shownCard").alt=(player.hand[i].name);
 }
 
