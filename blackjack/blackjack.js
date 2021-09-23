@@ -12,82 +12,10 @@ let playerNameForm = document.querySelector('#playerName');
 playerNameForm.addEventListener('input', updateName(testPlayer));
 getCardBtn.addEventListener('click', getCardTEST(testDeck, testPlayer));
 
-playTestGame();
-// starts a test game for the site
-
-const playTestGame = () => {
-    while (gameOver == false) {
-        if (testPlayer.hand.length > 0) {
-            displayCards(testPlayer, 0);
-        }
-    }
-}
-
-const displayCards = (player, i) => {
-    let card = player.hand[i];
-    document.getElementById("shownCard").src=("https://github.com/glinderm/CISC275.github.io/tree/main/media/deckofcards/" + player.hand[i].type + "_" + player.hand[i].suit + ".png");
-    document.getElementById("shownCard").alt=(player.hand[i].name);
-}
-
-const replaceDeckImg = () => {
-    document.getElementById("shownCard").src="./media/deckofcards/card_back.png";
-}
-
-const updateName = (player) => {
-    playerName = document.getElementById("playerName").value;
-    player.name = playerName;
-}
-
-const getCardTEST = (deck, player) => {
-    // hand = players[x].hand
-    if (gameOver == true) {
-        gameOver = false;
-    }
-    if (deck.length > 0) {
-        if (player.hand.length > 0) {
-            testDiscard.push(player.hand.pop());
-        }
-        player.hand.push(deck.pop());
-        displayCards(player, 0);
-    }
-    else {
-        alert("Out of cards! Shuffling a new deck...");
-        reshuffleTEST(testDeck, testPlayer, testDiscard);
-
-        gameOver = true;
-    }
-}
-
-const reshuffleTEST = (deck, player, discard) => {
-    shiftCards(player.hand, discard);
-    shiftCards(discard, deck);
-    shuffle(deck);
-}
-
 const printDeck = (deck) => {
     for (let i = 0; i < deck.length; i++) {
         console.log("Card: " + deck[i].name + ", " + deck[i].suit + ": " + deck[i].value);
     }
-}
-
-const blackjack = (numPlayers) => {
-    const players = newGame(numPlayers);
-    const deck = createDeck();
-    const discard = [];
-    shuffle(deck);
-    while (gameOver == false) {
-        deal(deck, players);
-        makeBids(players);
-        while (roundOver == false) {
-            for (let i = 0; i < players.length; i++) {
-                takeTurn(players[i], deck);
-            }
-        }
-        reshuffle(deck, players, discard, gameOver);
-        inputBid = 0;
-        roundOver = false;
-    }
-    endGame(players, deck);
 }
 
 const addPlayer = (name, type) => {
@@ -236,6 +164,38 @@ const scoreHand = (hand) => {
     return totalScore;
 }
 
+const findWinner = (players) => {
+    let biggestPot = 0;
+    let drawPool = [];
+    for (let p = 0; p < players.length; p++) {
+        if (players[p].winnings >= biggestPot) {
+            biggestPot = players[p].winnings;
+        }
+    }
+    for (let i = 0; i < players.length; i++) {
+        if (players[i].winnings == biggestPot) {
+            drawPool.push(i);
+        }
+    }
+    return drawPool;
+}
+
+const displayWinner = (drawpool, players) => {
+    if (drawpool == 1) {
+        console.log(players[drawpool[0]] + " is the winner!");
+    } else if (drawpool > 1) {
+        console.log("Tie!");
+    } else {
+        console.log("Something has gone terribly wrong. The house wins!");
+    }
+}
+
+const endGame = (players, deck) => {
+    // ends the entire game
+    displayWinner(findWinner(players), players);
+    // reshuffle(deck, players);    no reason to reshuffle deck - if draw is empty, game ends
+}
+
 const getCard = (deck, player) => {
     // hand = players[x].hand
     if (deck.length > 0) {
@@ -290,6 +250,18 @@ const checkBlackjack = (players) => {
     }
 }
 
+const shiftCards = (src, dst) => {
+    for (let i = 0; i < src.length; i++) {
+        dst.push(src.pop());
+    }
+}
+
+const discard = (discard, players) => {
+    for (let i = 0; i < players.length; i++) {
+        shiftCards(players[i].hand, discard);
+    }
+}
+
 const shuffle = (arr) => {
     for (let i = (arr.length-1); i > 0; i--) {
         let k = Math.floor(Math.random() * (i + 1));
@@ -313,18 +285,6 @@ const reshuffle = (deck, players, discard, gameOver) => {
     }
 }
 
-const shiftCards = (src, dst) => {
-    for (let i = 0; i < src.length; i++) {
-        dst.push(src.pop());
-    }
-}
-
-const discard = (discard, players) => {
-    for (let i = 0; i < players.length; i++) {
-        shiftCards(players[i].hand, discard);
-    }
-}
-
 const newGame = (numplayers) => {
     let players = [];
     for (let n = 1; n <= num; n++) {
@@ -342,6 +302,11 @@ const newGame = (numplayers) => {
         }
     }
     return players;
+}
+
+const playerTurn = (hand, hasPlayed) => {
+    // include button press handling etc
+    hasPlayed = true;
 }
 
 const takeTurn = (player, deck) => {
@@ -385,11 +350,6 @@ const buttonPress = () => {
     // standButton - ends turn, sets player.stand = true
 }
 
-const playerTurn = (hand, hasPlayed) => {
-    // include button press handling etc
-    hasPlayed = true;
-}
-
 const endRound = (players) => {
     dealerScore = players[players.length-1].score;
     for (let i = 0; i < players.length-1; i++) {
@@ -413,34 +373,75 @@ const endRound = (players) => {
     }
 }
 
-const findWinner = (players) => {
-    let biggestPot = 0;
-    let drawPool = [];
-    for (let p = 0; p < players.length; p++) {
-        if (players[p].winnings >= biggestPot) {
-            biggestPot = players[p].winnings;
+const blackjack = (numPlayers) => {
+    const players = newGame(numPlayers);
+    const deck = createDeck();
+    const discard = [];
+    shuffle(deck);
+    while (gameOver == false) {
+        deal(deck, players);
+        makeBids(players);
+        while (roundOver == false) {
+            for (let i = 0; i < players.length; i++) {
+                takeTurn(players[i], deck);
+            }
+        }
+        reshuffle(deck, players, discard, gameOver);
+        inputBid = 0;
+        roundOver = false;
+    }
+    endGame(players, deck);
+}
+// ----------------------------------------------------------TEST----------------------------------------------------------
+
+const playTestGame = () => {
+    while (gameOver == false) {
+        if (testPlayer.hand.length > 0) {
+            displayCards(testPlayer, 0);
         }
     }
-    for (let i = 0; i < players.length; i++) {
-        if (players[i].winnings == biggestPot) {
-            drawPool.push(i);
+}
+
+const displayCards = (player, i) => {
+    let card = player.hand[i];
+    document.getElementById("shownCard").src=("../media/deckofcards/" + player.hand[i].type + "_" + player.hand[i].suit + ".png");
+    document.getElementById("shownCard").alt=(player.hand[i].name);
+}
+
+const replaceDeckImg = () => {
+    document.getElementById("shownCard").src="../media/deckofcards/card_back.png";
+}
+
+const updateName = (player) => {
+    playerName = document.getElementById("playerName").value;
+    player.name = playerName;
+}
+
+const getCardTEST = (deck, player) => {
+    // hand = players[x].hand
+    if (gameOver == true) {
+        gameOver = false;
+    }
+    if (deck.length > 0) {
+        if (player.hand.length > 0) {
+            testDiscard.push(player.hand.pop());
         }
+        player.hand.push(deck.pop());
+        displayCards(player, 0);
     }
-    return drawPool;
-}
+    else {
+        alert("Out of cards! Shuffling a new deck...");
+        reshuffleTEST(testDeck, testPlayer, testDiscard);
 
-const displayWinner = (drawpool, players) => {
-    if (drawpool == 1) {
-        console.log(players[drawpool[0]] + " is the winner!");
-    } else if (drawpool > 1) {
-        console.log("Tie!");
-    } else {
-        console.log("Something has gone terribly wrong. The house wins!");
+        gameOver = true;
     }
 }
 
-const endGame = (players, deck) => {
-    // ends the entire game
-    displayWinner(findWinner(players), players);
-    // reshuffle(deck, players);    no reason to reshuffle deck - if draw is empty, game ends
+const reshuffleTEST = (deck, player, discard) => {
+    shiftCards(player.hand, discard);
+    shiftCards(discard, deck);
+    shuffle(deck);
 }
+
+playTestGame();
+// starts a test game for the site
