@@ -70,7 +70,7 @@ const printDeck = (deck) => {
     }
 }
 
-const blackjack = (numPlayers, players) => {
+const blackjack = (numPlayers) => {
     const players = newGame(numPlayers);
     const deck = createDeck();
     const discard = [];
