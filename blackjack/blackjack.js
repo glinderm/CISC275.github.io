@@ -3,10 +3,6 @@ let inputBid = 0;
 let gameOver = false;
 let roundOver = false;
 
-const testDeck = createDeck();
-const testDiscard = [];
-const testPlayer = addPlayer(playerName, human);
-
 let getCardBtn = document.querySelector('#getCardBtn');
 let playerNameForm = document.querySelector('#playerName');
 playerNameForm.addEventListener('input', updateName(testPlayer));
@@ -417,7 +413,7 @@ const updateName = (player) => {
     player.name = playerName;
 }
 
-const getCardTEST = (deck, player) => {
+function getCardTEST(deck, player) {
     // hand = players[x].hand
     if (gameOver == true) {
         gameOver = false;
@@ -442,6 +438,10 @@ const reshuffleTEST = (deck, player, discard) => {
     shiftCards(discard, deck);
     shuffle(deck);
 }
+
+const testDeck = createDeck();
+const testDiscard = [];
+const testPlayer = addPlayer(playerName, human);
 
 playTestGame();
 // starts a test game for the site
