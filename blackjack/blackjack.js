@@ -1,10 +1,68 @@
-let playerName = "";
+let playerName = "Player 1";
 let inputBid = 0;
 let gameOver = false;
 let roundOver = false;
 
 const testDeck = createDeck();
-printDeck(testDeck);
+const testDiscard = [];
+const testPlayer = addPlayer(playerName, human);
+
+let getCardBtn = document.querySelector('#getCardBtn');
+let playerNameForm =document.querySelector('#playerName');
+playerNameForm.addEventListener('input', updateName(testPlayer));
+getCardBtn.addEventListener('click', getCardTEST(testDeck, testPlayer));
+
+playTestGame();
+// starts a test game for the site
+
+const playTestGame = () => {
+    while (gameOver == false) {
+        if (testPlayer.hand.length > 0) {
+            displayCards(testPlayer, 0);
+        }
+    }
+}
+
+const displayCards = (player, i) => {
+    let card = player.hand[i];
+    document.getElementById("shownCard").src=("./media/deckofcards/" + player.hand[i].type + "_" + player.hand[i].suit + ".png");
+    document.getElementById("shownCard").alt=(player.hand[i].name);
+}
+
+const replaceDeckImg = () => {
+    document.getElementById("shownCard").src="./media/deckofcards/card_back.png";
+}
+
+const updateName = (player) => {
+    playerName = document.getElementById("playerName").value;
+    player.name = playerName;
+}
+
+const getCardTEST = (deck, player) => {
+    // hand = players[x].hand
+    if (gameOver == true) {
+        gameOver = false;
+    }
+    if (deck.length > 0) {
+        if (player.hand.length > 0) {
+            testDiscard.push(player.hand.pop());
+        }
+        player.hand.push(deck.pop());
+        displayCards(player, 0);
+    }
+    else {
+        alert("Out of cards! Shuffling a new deck...");
+        reshuffleTEST(testDeck, testPlayer, testDiscard);
+
+        gameOver = true;
+    }
+}
+
+const reshuffleTEST = (deck, player, discard) => {
+    shiftCards(player.hand, discard);
+    shiftCards(discard, deck);
+    shuffle(deck);
+}
 
 const printDeck = (deck) => {
     for (let i = 0; i < deck.length; i++) {
@@ -12,7 +70,7 @@ const printDeck = (deck) => {
     }
 }
 
-const playGame = (numPlayers, players) => {
+const blackjack = (numPlayers, players) => {
     const players = newGame(numPlayers);
     const deck = createDeck();
     const discard = [];
@@ -45,10 +103,11 @@ const addPlayer = (name, type) => {
     }
 }
 
-const createCard = (suit, value, name) => {
+const createCard = (suit, value, name, type) => {
     return {
         suit: suit,
         value: value,
+        type: type,
         name: name
     }
 }
@@ -69,6 +128,56 @@ const nameCard = (suit, value) => {
         }
     }
     name += " of " + suit;
+    return name;
+}
+
+const typeCard = (value) => {
+    let cardType = "";
+    switch (value) {
+        case 2:
+            cardType = "two";
+            break;
+        case 3:
+            cardType = "three";
+            break;
+        case 4:
+            cardType = "four";
+            break;
+        case 5:
+            cardType = "five";
+            break;
+        case 6:
+            cardType = "six";
+            break;
+        case 7:
+            cardType = "seven";
+            break;
+        case 8:
+            cardType = "eight";
+            break;
+        case 9:
+            cardType = "nine";
+            break;
+        case 10:
+            cardType = "ten";
+            break;
+        case 11:
+            cardType = "jack";
+            break;
+        case 12:
+            cardType = "queen";
+            break;
+        case 13:
+            cardType = "king";
+            break;
+        case 14:
+            cardType = "ace";
+            break;
+        default:
+            cardType = "joker";
+            break;
+    }
+    return cardType;
 }
 
 const createDeck = () => {
@@ -93,11 +202,11 @@ const createDeck = () => {
         }
         for (let v = 2; v < 15; v++) {
             if (v <= 10) {
-                deck.push(createCard(suit, v, nameCard(suit, v)));
+                deck.push(createCard(suit, v, nameCard(suit, v), typeCard(v)));
             } else if (v < 14) {
-                deck.push(createCard(suit, 10, nameCard(suit, v)));
+                deck.push(createCard(suit, 10, nameCard(suit, v), typeCard(v)));
             } else {
-                deck.push(createCard(suit, 14, nameCard(suit, v)));
+                deck.push(createCard(suit, 14, nameCard(suit, v), typeCard(v)));
             }
             
         }
@@ -166,7 +275,7 @@ const makeBids = (players) => {
     }
 }
 
-const blackjack = (players) => {
+const checkBlackjack = (players) => {
     
     for (let i = 0; i < players.length-1; i++) {
         if (players[players.length+1].score == 21) {
