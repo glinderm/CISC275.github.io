@@ -24,13 +24,8 @@
 
 div.page-main {
     background-color: wheat;
-    padding: 100px 15px;
-    border: 50px 10px solid cadetblue;
-}
-
-.navbar-side {
-    position: sticky;
-    top: 600px;
+    padding: 50px 10px;
+    border: 5px solid cadetblue;
 }
 
 ul .navbar-nav {
@@ -39,14 +34,14 @@ ul .navbar-nav {
 }
 
 p.page-main {
-    padding: 12px;
+    padding: 8px;
 }
 
 body.container-fluid {
-    margin: 15px 0px;
+    margin: 5px 0px;
 }
 
 .getCardBtn {
-    margin-top: 10px;
-    margin-left: 30px;
+    padding-top: 10px;
+    padding-left: 30px;
 }
