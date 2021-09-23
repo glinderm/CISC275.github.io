@@ -6,6 +6,8 @@
     font-family: Georgia;
     color: white;
     text-align: center;
+    padding-bottom: 100px;
+    padding-top: 50px;
 }
 
 .footer {
@@ -24,7 +26,7 @@
 
 div.page-main {
     background-color: wheat;
-    padding: 50px 10px;
+    padding: 5px 5px;
     border: 5px solid cadetblue;
 }
 
