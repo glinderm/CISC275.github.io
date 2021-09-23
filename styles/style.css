@@ -45,3 +45,8 @@ p.page-main {
 body.container-fluid {
     margin: 15px 0px;
 }
+
+.getCardBtn {
+    margin-top: 2px;
+    margin-left: 10px;
+}
