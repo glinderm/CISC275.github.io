@@ -49,13 +49,91 @@
                       </form>
                     </div>
                     <div class='col-lg-8'>
-                      <img src="../media/deckofcards/card_back.png" id='shownCard' alt='deck of cards'/>
-                      <br>
-                      <p>
-                        <button class='btn btn-info' id='getCardBtn'>
-                            Draw a card!
-                        </button>
-                      </p>
+                      <div class='row'>
+                        <img src="../media/deckofcards/card_back.png" id='shownCard' alt='deck of cards'/>
+                        <script>
+                          function getSuit() {
+                            let s = Math.floor(Math.random() * 4);
+                            let suit = "";
+                            if (s == 0) {
+                              suit = "clubs";
+                            } else if (s == 1) {
+                              suit = "diamonds";
+                            } else if (s == 2) {
+                              suit = "hearts";
+                            } else {
+                              suit = "spades";
+                            }
+                            return suit;
+                          }
+
+                          function getVal() {
+                            let val = (Math.floor(Math.random() * 12)) + 1;
+                            let name = "";
+                            switch (val) {
+                              case 1:
+                                name = "ace";
+                                break;
+                              case 2:
+                                name = "two";
+                                break;
+                              case 3:
+                                name = "three";
+                                break;
+                              case 4:
+                                name = "four";
+                                break;
+                              case 5:
+                                name = "five";
+                                break;
+                              case 6:
+                                name = "six";
+                                break;
+                              case 7:
+                                name = "seven";
+                                break;
+                              case 8:
+                                name = "eight";
+                                break;
+                              case 9:
+                                name = "nine";
+                                break;
+                              case 10:
+                                name = "ten";
+                                break;
+                              case 11:
+                                name = "jack";
+                                break;
+                              case 12:
+                                name = "queen";
+                                break;
+                              case 13:
+                                name = "king";
+                                break;
+                            }
+                            return name;
+                          }
+
+                          function nameCard(num, suit) {
+                            let imgpath = "../media/deckofcards/" + num + "_" + suit + ".png";
+                            return imgpath;
+                          }
+
+                          function swapCard() {
+                            let cardNum = getVal();
+                            let cardSuit = getSuit();
+                            let path = nameCard(cardNum, cardSuit);
+                            document.getElementById('shownCard').src = path;
+                          }
+                        </script>
+                      </div>
+                      <div class='row'>
+                        <p>
+                          <button type='button' onclick="swapCard()" class='btn btn-info' id='getCardBtn'>
+                              Draw a card!
+                          </button>
+                        </p>
+                      </div>
                     </div>
                     <div class='col-lg-1'>
 
