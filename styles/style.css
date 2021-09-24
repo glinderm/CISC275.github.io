@@ -24,6 +24,10 @@
     font-family: Georgia;
 }
 
+.changelog {
+    padding-left: 20px;
+}
+
 div.page-main {
     background-color: wheat;
     padding: 5px 5px;
