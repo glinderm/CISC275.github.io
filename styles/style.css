@@ -44,6 +44,7 @@ p.page-main {
     padding: 10px;
     border: 3px solid dodgerblue;
     border-radius: 7px;
+    text-align: center;
 }
 
 body.container-fluid {
@@ -53,4 +54,10 @@ body.container-fluid {
 .getCardBtn {
     padding-top: 10px;
     padding-left: 30px;
+}
+
+.penguinCarousel img {
+    width: 900px;
+    height: 600px;
+    max-height: 600px;
 }
