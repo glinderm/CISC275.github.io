@@ -14,8 +14,9 @@ body {
 }
 
 .general {
-    border-left: 40px solid dodgerblue;
-    border-right: 40px solid dodgerblue;
+    border-left: 40px solid lightblue;
+    border-right: 40px solid lightblue;
+    border-radius: 5px;
 }
 
 .footer {
@@ -39,7 +40,7 @@ body {
 div.page-main {
     background-color: wheat;
     padding: 35px 10px;
-    border: 15px 10px solid cadetblue;
+    /*border: 15px 10px solid cadetblue;*/
 }
 
 ul .navbar-nav {
@@ -68,6 +69,12 @@ body.container-fluid {
     height: 600px;
     max-height: 600px;
     display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+#penguinSlidesControls button {
+    width: 50%;
+    height: auto;
     margin-left: auto;
     margin-right: auto;
 }
