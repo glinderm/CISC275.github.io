@@ -1,14 +1,21 @@
+body {
+    background-color: wheat;
+}
+
 .header {
     background-color: deepskyblue;
-    border-bottom: 3px solid dodgerblue;
-    border-radius: 5px;
-    width: 100%;
-    height: 40px;
+    border-bottom: 4px solid dodgerblue;
+    border-radius: 8px;
     font-family: Georgia;
     color: white;
     text-align: left;
     padding-bottom: 20px;
     padding-top: 20px;
+}
+
+.general {
+    border-left: 40px solid dodgerblue;
+    border-right: 40px solid dodgerblue;
 }
 
 .footer {
